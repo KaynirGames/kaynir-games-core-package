@@ -1,2 +1,2 @@
-# KaynirGames-Core-Package
+# KaynirGames Core Package
 Пополняемый пакет полезных классов для личного использования.
