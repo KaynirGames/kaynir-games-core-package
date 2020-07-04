@@ -1,0 +1,13 @@
+{
+	"name" : "com.kaynirgames.core",
+	"version" : "1.0.0",
+	"displayName" : "KaynirGames Core Package",
+	"description" : "Package of different tools and classes for personal use.",
+	"unity" : "2019.3",
+	"keywords" : ["kaynir, kaynirgames"],
+	"author" : {
+		"name" : "Denis Znov",
+		"email" : "kaynir.games@gmail.com",
+		"url" : "https://github.com/KaynirGames"
+	}
+}
