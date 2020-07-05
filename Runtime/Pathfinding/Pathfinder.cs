@@ -47,14 +47,14 @@ namespace KaynirGames.Pathfinding
         /// <summary>
         /// Найти оптимальный маршрут.
         /// </summary>
-        public void FindPath(Vector2 startPoint, Vector2 endPoint, Action<Vector2[], bool> onPathComplete)
+        public void FindPath(Vector2 startPoint, Vector2 endPoint, Action<Path> onPathComplete)
         {
             if (_grid == null) CreateGrid();
 
             _startNode = _grid.GetValue(startPoint);
             _endNode = _grid.GetValue(endPoint);
             bool pathSuccess = false;
-            Vector2[] path = null;
+            PathNode[] pathNodes = null;
 
             if (_endNode.IsObstacle)
             {
@@ -62,7 +62,7 @@ namespace KaynirGames.Pathfinding
                 _endNode = TryOptimalNeighbour(_startNode, _endNode);
                 if (_endNode == null)
                 {
-                    onPathComplete?.Invoke(path, pathSuccess);
+                    onPathComplete?.Invoke(new Path(null, false));
                     return;
                 }
             }
@@ -79,8 +79,8 @@ namespace KaynirGames.Pathfinding
 
                 if (currentNode == _endNode)
                 {
-                    pathSuccess = true;
-                    path = RetracePath(_startNode, _endNode);
+                    pathNodes = RetracePath(_startNode, _endNode);
+                    if (pathNodes.Length > 0) pathSuccess = true;
                     break;
                 }
 
@@ -92,7 +92,7 @@ namespace KaynirGames.Pathfinding
                     CheckNeighbour(currentNode, neighbour);
                 }
             }
-            onPathComplete?.Invoke(path, pathSuccess);
+            onPathComplete?.Invoke(new Path(pathNodes, pathSuccess));
         }
         /// <summary>
         /// Попробовать найти оптимального соседа конечного узла.
@@ -170,7 +170,7 @@ namespace KaynirGames.Pathfinding
         /// <summary>
         /// Записать пройденный маршрут.
         /// </summary>
-        private Vector2[] RetracePath(PathNode startNode, PathNode endNode)
+        private PathNode[] RetracePath(PathNode startNode, PathNode endNode)
         {
             List<PathNode> path = new List<PathNode>();
             PathNode currentNode = endNode;
@@ -182,26 +182,7 @@ namespace KaynirGames.Pathfinding
             }
             path.Reverse();
 
-            return SimplifyPath(path);
-        }
-        /// <summary>
-        /// Упростить маршрут, избавившись от лишних точек перемещения.
-        /// </summary>
-        private Vector2[] SimplifyPath(List<PathNode> path)
-        {
-            List<Vector2> simplePath = new List<Vector2>();
-            Vector2 oldDirection = Vector2.zero;
-            for (int i = 0; i < path.Count - 1; i++)
-            {
-                Vector2 newDirection = path[i + 1].GridPosition - path[i].GridPosition;
-                if (newDirection != oldDirection) // Добавляем точку, если изменилось направление маршрута.
-                {
-                    simplePath.Add(path[i].WorldPosition);
-                }
-                oldDirection = newDirection;
-            }
-            simplePath.Add(path[path.Count - 1].WorldPosition); // Также добавляем последнюю точку.
-            return simplePath.ToArray();
+            return path.ToArray();
         }
 
         private void OnEnable()

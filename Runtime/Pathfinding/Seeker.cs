@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace KaynirGames.Pathfinding
@@ -10,6 +11,7 @@ namespace KaynirGames.Pathfinding
     {
         [SerializeField] private float _nextWaypointDistance = 1f; // Расстояние для перехода к следующей точке маршрута.
         [SerializeField] private float _followSpeed = 2f; // Скорость движения по маршруту.
+        [SerializeField] private bool _useSimplePath = true; // Использовать упрощенный маршрут?
         [SerializeField] private bool _displayPath = false; // Отображать маршрут при движении?
 
         /// <summary>
@@ -20,25 +22,41 @@ namespace KaynirGames.Pathfinding
         /// Движение по маршруту завершилось?
         /// </summary>
         public bool IsFollowingDone { get; private set; }
+        /// <summary>
+        /// Объект может двигаться?
+        /// </summary>
+        public bool CanMove { get; set; }
 
         private Pathfinder _activePathfinder; // Действующий искатель пути, осуществляющий вычисления.
-        private Vector2[] _currentPath; // Текущий маршрут.
+        private Vector2[] _currentWaypoints; // Текущие точки маршрута.
         private int _currentPointIndex; // Текущий индекс точки маршрута.
         private Coroutine _lastFollowRoutine; // Последняя запущенная корутина движения по маршруту.
+        private bool _handlePathMovement; // Управлять перемещением по маршруту?
 
         private void Awake()
         {
             Pathfinder.OnActivePathfinderChange += SetActivePathfinder;
             IsRequestDone = true;
             IsFollowingDone = true;
+            CanMove = true;
         }
         /// <summary>
-        /// Запросить оптимальный маршрут между точками.
+        /// Запросить оптимальный маршрут между точками (сикер управляет движением по маршруту).
         /// </summary>
         public void RequestPath(Vector2 startPoint, Vector2 endPoint)
         {
             IsRequestDone = false;
-            _activePathfinder.FindPath(startPoint, endPoint, ReceivePath);
+            _handlePathMovement = true;
+            _activePathfinder.FindPath(startPoint, endPoint, CompleteRequest);
+        }
+        /// <summary>
+        /// Запросить оптимальный маршрут между точками (сикер не управляет движением по маршруту).
+        /// </summary>
+        public void RequestPath(Vector2 startPoint, Vector2 endPoint, Action<Path> onPathReceive)
+        {
+            IsRequestDone = false;
+            _handlePathMovement = false;
+            _activePathfinder.FindPath(startPoint, endPoint, onPathReceive);
         }
         /// <summary>
         /// Установить скорость движения по маршруту.
@@ -57,18 +75,20 @@ namespace KaynirGames.Pathfinding
             }
         }
         /// <summary>
-        /// Получить оптимальный маршрут.
+        /// Завершить запрос на получение пути.
         /// </summary>
-        private void ReceivePath(Vector2[] path, bool pathSuccess)
+        private void CompleteRequest(Path path)
         {
             IsRequestDone = true;
-            if (pathSuccess)
+
+            if (!_handlePathMovement) return;
+
+            if (path.Exist)
             {
-                _currentPath = path;
+                _currentWaypoints = _useSimplePath ? path.Simplify() : path.Waypoints;
                 if (_lastFollowRoutine != null) StopCoroutine(_lastFollowRoutine);
                 _lastFollowRoutine = StartCoroutine(FollowPath());
             }
-            else Debug.Log("Путь не найден.");
         }
         /// <summary>
         /// Двигаться по текущему маршруту.
@@ -78,16 +98,19 @@ namespace KaynirGames.Pathfinding
             _currentPointIndex = 0;
             IsFollowingDone = false;
 
-            while (_currentPointIndex < _currentPath.Length)
+            while (_currentPointIndex < _currentWaypoints.Length)
             {
-                Vector2 currentWaypoint = _currentPath[_currentPointIndex];
-                float distance = Vector2.Distance(transform.position, currentWaypoint);
-
-                if (distance < _nextWaypointDistance)
+                if (CanMove)
                 {
-                    _currentPointIndex++;
+                    Vector2 currentWaypoint = _currentWaypoints[_currentPointIndex];
+                    float distance = Vector2.Distance(transform.position, currentWaypoint);
+
+                    if (distance < _nextWaypointDistance)
+                    {
+                        _currentPointIndex++;
+                    }
+                    transform.position = Vector2.MoveTowards(transform.position, currentWaypoint, _followSpeed * Time.deltaTime);
                 }
-                transform.position = Vector2.MoveTowards(transform.position, currentWaypoint, _followSpeed * Time.deltaTime);
                 yield return null;
             }
             IsFollowingDone = true;
@@ -97,18 +120,18 @@ namespace KaynirGames.Pathfinding
         {
             if (_displayPath)
             {
-                if (_currentPath != null)
+                if (_currentWaypoints != null)
                 {
-                    for (int i = _currentPointIndex; i < _currentPath.Length; i++)
+                    for (int i = _currentPointIndex; i < _currentWaypoints.Length; i++)
                     {
                         Gizmos.color = Color.green;
                         if (i == _currentPointIndex)
                         {
-                            Gizmos.DrawLine(transform.position, _currentPath[i]);
+                            Gizmos.DrawLine(transform.position, _currentWaypoints[i]);
                         }
                         else
                         {
-                            Gizmos.DrawLine(_currentPath[i - 1], _currentPath[i]);
+                            Gizmos.DrawLine(_currentWaypoints[i - 1], _currentWaypoints[i]);
                         }
                     }
                 }
