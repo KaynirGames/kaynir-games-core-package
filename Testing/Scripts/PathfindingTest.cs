@@ -1,11 +1,12 @@
 ﻿using KaynirGames.Pathfinding;
 using KaynirGames.Tools;
+using KaynirGames.Movement;
 using UnityEngine;
 
 public class PathfindingTest : MonoBehaviour
 {
-    [SerializeField] Seeker _seeker = null;
     [SerializeField] Pathfinder _pathfinder = null;
+    [SerializeField] PathfindingMovement pathfindingMovement = null;
 
     private void Start()
     {
@@ -17,8 +18,7 @@ public class PathfindingTest : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Vector3 endPoint = MyToolset.GetMouseWorldPosition();
-            if (_seeker.IsRequestDone)
-                _seeker.RequestPath(_seeker.transform.position, endPoint);
+            pathfindingMovement.SetMovementPosition(endPoint);
         }
     }
 }

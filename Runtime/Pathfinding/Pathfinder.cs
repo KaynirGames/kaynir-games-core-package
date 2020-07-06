@@ -47,7 +47,7 @@ namespace KaynirGames.Pathfinding
         /// <summary>
         /// Найти оптимальный маршрут.
         /// </summary>
-        public void FindPath(Vector2 startPoint, Vector2 endPoint, Action<Path> onPathComplete)
+        public Path FindPath(Vector2 startPoint, Vector2 endPoint)
         {
             if (_grid == null) CreateGrid();
 
@@ -62,8 +62,7 @@ namespace KaynirGames.Pathfinding
                 _endNode = TryOptimalNeighbour(_startNode, _endNode);
                 if (_endNode == null)
                 {
-                    onPathComplete?.Invoke(new Path(null, false));
-                    return;
+                    return new Path(null, false);
                 }
             }
 
@@ -92,7 +91,7 @@ namespace KaynirGames.Pathfinding
                     CheckNeighbour(currentNode, neighbour);
                 }
             }
-            onPathComplete?.Invoke(new Path(pathNodes, pathSuccess));
+            return new Path(pathNodes, pathSuccess);
         }
         /// <summary>
         /// Попробовать найти оптимального соседа конечного узла.
