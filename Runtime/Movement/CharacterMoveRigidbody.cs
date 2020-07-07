@@ -5,7 +5,7 @@ namespace KaynirGames.Movement
     [RequireComponent(typeof(Rigidbody2D))]
     public class CharacterMoveRigidbody : CharacterMoveBase
     {
-        [SerializeField] private float _moveSpeed = 30f; // Скорость движения персонажа.
+        [SerializeField] private float _moveSpeed = 25f; // Скорость движения персонажа.
         [SerializeField, Range(0f, 0.3f)] private float _moveSmoothing = .05f; // Сглаживание движения персонажа.
         [SerializeField] private bool _enableSmoothing = false; // Использовать сглаживание движения?
 
@@ -29,7 +29,7 @@ namespace KaynirGames.Movement
 
         protected override void HandleMove()
         {
-            Vector2 targetVelocity = _moveDirection * _moveSpeed * Time.fixedDeltaTime;
+            Vector2 targetVelocity = _moveDirection * _moveSpeed * 10f * Time.fixedDeltaTime;
             _characterRigidbody.velocity = _enableSmoothing 
                 ? targetVelocity 
                 : Vector2.SmoothDamp(_characterRigidbody.velocity, targetVelocity, ref _currentVelocity, _moveSmoothing);
