@@ -183,7 +183,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 855927e42b1d7b04daac4037f0ef2646, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pathfinder: {fileID: 2000541358}
   pathfindingMovement: {fileID: 414549472}
 --- !u!4 &108835719
 Transform:

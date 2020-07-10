@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class PathfindingTest : MonoBehaviour
 {
-    [SerializeField] Pathfinder _pathfinder = null;
     [SerializeField] PathfindingMovement pathfindingMovement = null;
 
     private void Start()
     {
-        _pathfinder.CreateGrid();
+        //_pathfinder.CreateGrid();
+        Pathfinder.Instance.CreateGrid();
     }
 
     private void Update()

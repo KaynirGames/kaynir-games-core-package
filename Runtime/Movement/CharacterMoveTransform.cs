@@ -17,6 +17,16 @@ namespace KaynirGames.Movement
 
         public override void SetMoveSpeed(float moveSpeed) => _moveSpeed = moveSpeed;
 
+        public override void Enable()
+        {
+            enabled = true;
+        }
+
+        public override void Disable()
+        {
+            enabled = false;
+        }
+
         protected override void HandleMove()
         {
             transform.position += _moveDirection * _moveSpeed * Time.deltaTime;

@@ -15,6 +15,8 @@ namespace KaynirGames.Pathfinding
         /// </summary>
         public static event Action<Pathfinder> OnActivePathfinderChange = delegate { };
 
+        public static Pathfinder Instance { get; private set; }
+
         [SerializeField] private Vector2Int _gridSize = Vector2Int.one; // Величина сетки.
         [SerializeField] private float _nodeSize = 1f; // Величина узла.
         [SerializeField] private LayerMask _obstacleMask = new LayerMask(); // Для определения узлов, являющихся препятствием.
@@ -187,14 +189,14 @@ namespace KaynirGames.Pathfinding
         private void OnEnable()
         {
             // Уведомляем о включении действующего искателя.
-            OnActivePathfinderChange?.Invoke(this);
+            if (Instance == null) Instance = this;
         }
 
         private void OnDisable()
         {
             // Уведомляем об отключении действующего искателя.
             // Это разрешит seeker-объекту установить нового искателя.
-            OnActivePathfinderChange?.Invoke(null);
+            Instance = null;
         }
 
         private void OnDrawGizmos()

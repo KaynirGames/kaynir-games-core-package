@@ -9,10 +9,10 @@ namespace KaynirGames.Movement
     [RequireComponent(typeof(Seeker))]
     public class PathfindingMovement : BaseMovement
     {
-        [SerializeField] private CharacterMoveBase _characterMove = null; // Механика перемещения персонажа.
         [SerializeField] private float _waypointReachedDistance = 0.2f; // Дистанция, при которой точка считается достигнутой.
         [SerializeField] private bool _useSimplePath = true; // Использовать упрощенный маршрут?
         [SerializeField] private bool _displayPath = false; // Отображать найденный маршрут?
+        [SerializeField] private CharacterMoveBase _characterMoveMethod = null; // Способ движения персонажа.
 
         private Seeker _seeker; // Текущий сикер.     
         private Vector2[] _waypoints = new Vector2[0]; // Точки маршрута.
@@ -25,7 +25,7 @@ namespace KaynirGames.Movement
 
         private void Update()
         {
-            if (_characterMove == null) return;
+            if (_characterMoveMethod == null) return;
 
             HandleMovement();
         }
@@ -52,7 +52,7 @@ namespace KaynirGames.Movement
                 Vector3 nextPosition = _waypoints[_waypointIndex];
                 Vector3 moveDirection = (nextPosition - transform.position).normalized;
 
-                _characterMove.SetMoveDirection(moveDirection);
+                _characterMoveMethod.SetMoveDirection(moveDirection);
 
                 if (Vector2.Distance(transform.position, nextPosition) <= _waypointReachedDistance)
                 {
@@ -66,7 +66,7 @@ namespace KaynirGames.Movement
             }
             else
             {
-                _characterMove.SetMoveDirection(Vector3.zero);
+                _characterMoveMethod.SetMoveDirection(Vector3.zero);
             }
         }
 
