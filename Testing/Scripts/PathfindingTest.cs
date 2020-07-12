@@ -9,8 +9,7 @@ public class PathfindingTest : MonoBehaviour
 
     private void Start()
     {
-        //_pathfinder.CreateGrid();
-        Pathfinder.Instance.CreateGrid();
+        Pathfinder.Instance.Initialize();
     }
 
     private void Update()

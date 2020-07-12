@@ -7,12 +7,6 @@ namespace KaynirGames.Pathfinding
     /// </summary>
     public class Seeker : MonoBehaviour
     {
-        private Pathfinder _activePathfinder; // Действующий искатель пути, осуществляющий вычисления.
-
-        private void Start()
-        {
-            _activePathfinder = Pathfinder.Instance;
-        }
         /// <summary>
         /// Получить полный оптимальный маршрут между точками.
         /// </summary>
@@ -29,17 +23,5 @@ namespace KaynirGames.Pathfinding
             Path path = Pathfinder.Instance.FindPath(startPoint, endPoint);
             return path.Exist ? path.Simplify() : new Vector2[0];
         }
-        ///// <summary>
-        ///// Установить действующего искателя пути.
-        ///// </summary>
-        //private void SetActivePathfinder(Pathfinder pathfinder)
-        //{
-        //    // Одновременно может быть активен только один искатель пути.
-        //    // Устанавливаем искателя, если его не было изначально, либо отключился предыдущий.
-        //    if (_activePathfinder == null || pathfinder == null)
-        //    {
-        //        _activePathfinder = pathfinder;
-        //    }
-        //}
     }
 }
