@@ -44,7 +44,7 @@ namespace KaynirGames.Pathfinding
         /// </summary>
         public Vector2[] GetGridWorldPoints(bool includeObstacles)
         {
-            return includeObstacles 
+            return includeObstacles
                 ? _allWorldPoints.ToArray() 
                 : _freeWorldPoints.ToArray();
         }

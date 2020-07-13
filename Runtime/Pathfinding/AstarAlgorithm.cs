@@ -24,7 +24,7 @@ namespace KaynirGames.Pathfinding
         {
             PathNode startNode = _grid.GetValue(startPoint);
             PathNode endNode = _grid.GetValue(endPoint);
-            bool pathSuccess = false;
+            bool isFound = false;
             PathNode[] pathNodes = null;
             
             if (endNode.IsObstacle)
@@ -48,7 +48,7 @@ namespace KaynirGames.Pathfinding
                 if (currentNode == endNode)
                 {
                     pathNodes = RetracePath(startNode, endNode);
-                    if (pathNodes.Length > 0) pathSuccess = true;
+                    if (pathNodes.Length > 0) isFound = true;
                     break;
                 }
 
@@ -61,7 +61,7 @@ namespace KaynirGames.Pathfinding
                 }
             }
 
-            return new Path(pathNodes, pathSuccess);
+            return new Path(pathNodes, isFound);
         }
         /// <summary>
         /// Попробовать найти оптимального соседа конечного узла.
