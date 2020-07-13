@@ -404,7 +404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27f70337ab5436a41a5d03654fafb56b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _waypointReachedDistance: 0.2
+  _positionReachedDistance: 0.2
   _useSimplePath: 1
   _displayPath: 1
   _characterMoveMethod: {fileID: 414549477}

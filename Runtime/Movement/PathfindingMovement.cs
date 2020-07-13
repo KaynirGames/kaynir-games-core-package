@@ -9,7 +9,6 @@ namespace KaynirGames.Movement
     [RequireComponent(typeof(Seeker))]
     public class PathfindingMovement : BaseMovement
     {
-        [SerializeField] private float _waypointReachedDistance = 0.2f; // Дистанция, при которой точка считается достигнутой.
         [SerializeField] private bool _useSimplePath = true; // Использовать упрощенный маршрут?
         [SerializeField] private bool _displayPath = false; // Отображать найденный маршрут?
         [SerializeField] private CharacterMoveBase _characterMoveMethod = null; // Способ движения персонажа.
@@ -25,9 +24,10 @@ namespace KaynirGames.Movement
 
         private void Update()
         {
-            if (_characterMoveMethod == null) return;
-
-            HandleMovement();
+            if (_characterMoveMethod != null)
+            {
+                HandleMovement();
+            }
         }
         /// <summary>
         /// Задать позицию для перемещения.
@@ -38,7 +38,11 @@ namespace KaynirGames.Movement
                 ? _seeker.GetSimplePath(transform.position, movePosition)
                 : _seeker.GetFullPath(transform.position, movePosition);
 
-            if (_waypoints.Length > 0) _waypointIndex = 0;
+            if (_waypoints.Length > 0)
+            {
+                _waypointIndex = 0;
+                ReachedDestination = false;
+            }
             else _waypointIndex = -1;
         }
         /// <summary>
@@ -54,13 +58,14 @@ namespace KaynirGames.Movement
 
                 _characterMoveMethod.SetMoveDirection(moveDirection);
 
-                if (Vector2.Distance(transform.position, nextPosition) <= _waypointReachedDistance)
+                if (Vector2.Distance(transform.position, nextPosition) <= _positionReachedDistance)
                 {
                     _waypointIndex++;
 
                     if (_waypointIndex >= _waypoints.Length)
                     {
                         _waypointIndex = -1; // Конец пути.
+                        ReachedDestination = true;
                     }
                 }
             }
