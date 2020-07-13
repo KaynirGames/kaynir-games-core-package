@@ -26,7 +26,7 @@ namespace KaynirGames.Pathfinding
             PathNode endNode = _grid.GetValue(endPoint);
             bool pathSuccess = false;
             PathNode[] pathNodes = null;
-
+            
             if (endNode.IsObstacle)
             {
                 // Пробуем дойти до ближайшего соседа конечного узла.

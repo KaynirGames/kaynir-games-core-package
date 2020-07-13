@@ -21,8 +21,10 @@ namespace KaynirGames.Movement
         {
             _movePosition = position;
             _moveDirection = Vector3.one;
-            ReachedDestination = false;
+            InPosition = false;
         }
+
+        public override void StopMovement() => _moveDirection = Vector3.zero;
 
         protected override void HandleMovement()
         {
@@ -34,7 +36,7 @@ namespace KaynirGames.Movement
                 if (Vector2.Distance(_movePosition, transform.position) <= _positionReachedDistance)
                 {
                     _moveDirection = Vector3.zero;
-                    ReachedDestination = true;
+                    InPosition = true;
                 }
             }
             else

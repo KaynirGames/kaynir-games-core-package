@@ -29,9 +29,7 @@ namespace KaynirGames.Movement
                 HandleMovement();
             }
         }
-        /// <summary>
-        /// Задать позицию для перемещения.
-        /// </summary>
+
         public override void SetMovementPosition(Vector3 movePosition)
         {
             _waypoints = _useSimplePath
@@ -41,13 +39,13 @@ namespace KaynirGames.Movement
             if (_waypoints.Length > 0)
             {
                 _waypointIndex = 0;
-                ReachedDestination = false;
+                InPosition = false;
             }
             else _waypointIndex = -1;
         }
-        /// <summary>
-        /// Осуществить перемещение.
-        /// </summary>
+
+        public override void StopMovement() => _waypointIndex = -1;
+
         protected override void HandleMovement()
         {
             if (_waypointIndex != -1)
@@ -65,7 +63,7 @@ namespace KaynirGames.Movement
                     if (_waypointIndex >= _waypoints.Length)
                     {
                         _waypointIndex = -1; // Конец пути.
-                        ReachedDestination = true;
+                        InPosition = true;
                     }
                 }
             }

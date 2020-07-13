@@ -19,5 +19,10 @@ public class PathfindingTest : MonoBehaviour
             Vector3 endPoint = MyToolset.GetMouseWorldPosition();
             pathfindingMovement.SetMovementPosition(endPoint);
         }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            pathfindingMovement.StopMovement();
+        }
     }
 }

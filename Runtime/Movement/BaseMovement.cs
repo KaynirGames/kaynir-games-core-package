@@ -9,13 +9,17 @@ namespace KaynirGames.Movement
     {
         [SerializeField] protected float _positionReachedDistance = .05f; // Дистанция, на которой позиция считается достигнутой.
         /// <summary>
-        /// Достигли точки назначения?
+        /// Достигли назначенной позиции?
         /// </summary>
-        public bool ReachedDestination { get; protected set; }
+        public bool InPosition { get; protected set; }
         /// <summary>
         /// Задать позицию для перемещения.
         /// </summary>
         public abstract void SetMovementPosition(Vector3 position);
+        /// <summary>
+        /// Остановить перемещение.
+        /// </summary>
+        public abstract void StopMovement();
         /// <summary>
         /// Осуществить перемещение.
         /// </summary>

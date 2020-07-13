@@ -16,11 +16,11 @@ namespace KaynirGames.Movement
         /// </summary>
         public abstract void SetMoveSpeed(float moveSpeed);
         /// <summary>
-        /// Активировать возможность перемещения.
+        /// Активировать возможность движения персонажа.
         /// </summary>
         public abstract void Enable();
         /// <summary>
-        /// Деактивировать возможность перемещения.
+        /// Деактивировать возможность движения персонажа.
         /// </summary>
         public abstract void Disable();
         /// <summary>
