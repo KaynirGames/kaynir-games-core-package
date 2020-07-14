@@ -9,9 +9,9 @@ namespace KaynirGames.Movement
     {
         [SerializeField] protected float _positionReachedDistance = .05f; // Дистанция, на которой позиция считается достигнутой.
         /// <summary>
-        /// Достигли назначенной позиции?
+        /// Перемещение выполняется в настоящий момент?
         /// </summary>
-        public bool InPosition { get; protected set; }
+        public bool IsMoving { get; protected set; }
         /// <summary>
         /// Задать позицию для перемещения.
         /// </summary>

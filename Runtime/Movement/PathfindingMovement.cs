@@ -39,9 +39,13 @@ namespace KaynirGames.Movement
             if (_waypoints.Length > 0)
             {
                 _waypointIndex = 0;
-                InPosition = false;
+                IsMoving = true;
             }
-            else _waypointIndex = -1;
+            else
+            {
+                _waypointIndex = -1;
+                IsMoving = false;
+            }
         }
 
         public override void StopMovement() => _waypointIndex = -1;
@@ -63,7 +67,7 @@ namespace KaynirGames.Movement
                     if (_waypointIndex >= _waypoints.Length)
                     {
                         _waypointIndex = -1; // Конец пути.
-                        InPosition = true;
+                        IsMoving = false;
                     }
                 }
             }
