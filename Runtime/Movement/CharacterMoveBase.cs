@@ -7,25 +7,13 @@ namespace KaynirGames.Movement
     /// </summary>
     public abstract class CharacterMoveBase : MonoBehaviour
     {
-        /// <summary>
-        /// Задать направление движения персонажа.
-        /// </summary>
+
         public abstract void SetMoveDirection(Vector3 moveDirection);
-        /// <summary>
-        /// Задать скорость движения персонажа.
-        /// </summary>
+
         public abstract void SetMoveSpeed(float moveSpeed);
-        /// <summary>
-        /// Активировать возможность движения персонажа.
-        /// </summary>
-        public abstract void Enable();
-        /// <summary>
-        /// Деактивировать возможность движения персонажа.
-        /// </summary>
-        public abstract void Disable();
-        /// <summary>
-        /// Осуществить движение персонажа.
-        /// </summary>
+
+        public abstract void Toggle(bool enable);
+
         protected abstract void HandleMove();
     }
 }

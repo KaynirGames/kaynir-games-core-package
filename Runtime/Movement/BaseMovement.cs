@@ -7,22 +7,14 @@ namespace KaynirGames.Movement
     /// </summary>
     public abstract class BaseMovement : MonoBehaviour
     {
-        [SerializeField] protected float _positionReachedDistance = .05f; // Дистанция, на которой позиция считается достигнутой.
-        /// <summary>
-        /// Перемещение выполняется в настоящий момент?
-        /// </summary>
+        [SerializeField] protected float _positionReachedDistance = .05f;
+
         public bool IsMoving { get; protected set; }
-        /// <summary>
-        /// Задать позицию для перемещения.
-        /// </summary>
+
         public abstract void SetMovementPosition(Vector3 position);
-        /// <summary>
-        /// Остановить перемещение.
-        /// </summary>
+
         public abstract void StopMovement();
-        /// <summary>
-        /// Осуществить перемещение.
-        /// </summary>
+
         protected abstract void HandleMovement();
     }
 }

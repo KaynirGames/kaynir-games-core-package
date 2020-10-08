@@ -27,15 +27,15 @@ namespace KaynirGames.Movement
 
         public override void SetMoveSpeed(float moveSpeed) => _moveSpeed = moveSpeed;
 
-        public override void Enable()
+        public override void Toggle(bool enable)
         {
-            enabled = true;
-        }
+            if (!enable)
+            {
+                _characterRigidbody.velocity = Vector2.zero;
+                _moveDirection = Vector3.zero;
+            }
 
-        public override void Disable()
-        {
-            _characterRigidbody.velocity = Vector2.zero;
-            enabled = false;
+            enabled = enable;
         }
 
         protected override void HandleMove()

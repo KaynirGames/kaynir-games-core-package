@@ -4,9 +4,9 @@ namespace KaynirGames.Movement
 {
     public class CharacterMoveTransform : CharacterMoveBase
     {
-        [SerializeField] private float _moveSpeed = 30f; // Скорость движения персонажа.
+        [SerializeField] private float _moveSpeed = 30f;
 
-        private Vector3 _moveDirection = Vector3.zero; // Направление движения персонажа.
+        private Vector3 _moveDirection = Vector3.zero;
 
         private void Update()
         {
@@ -17,14 +17,9 @@ namespace KaynirGames.Movement
 
         public override void SetMoveSpeed(float moveSpeed) => _moveSpeed = moveSpeed;
 
-        public override void Enable()
+        public override void Toggle(bool enable)
         {
-            enabled = true;
-        }
-
-        public override void Disable()
-        {
-            enabled = false;
+            enabled = enable;
         }
 
         protected override void HandleMove()

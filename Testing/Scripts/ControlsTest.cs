@@ -8,6 +8,7 @@ public class ControlsTest : MonoBehaviour
     [SerializeField] private InputHandler _inputControl = null;
 
     private Vector3 _moveDirection = Vector3.zero;
+    private bool _isMoveEnabled = true;
 
     private void Update()
     {
@@ -22,6 +23,12 @@ public class ControlsTest : MonoBehaviour
         if (Input.GetButton("Fire1"))
         {
             Debug.Log("Attack button pressed.");
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            _isMoveEnabled = !_isMoveEnabled;
+            _characterMoveBase.Toggle(_isMoveEnabled);
         }
     }
 }
