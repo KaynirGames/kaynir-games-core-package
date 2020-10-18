@@ -10,7 +10,7 @@ public class MovementTest : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Vector3 endPoint = MyToolset.GetMouseWorldPosition();
+            Vector3 endPoint = KaynirTools.GetMouseWorldPosition();
             foreach (GameObject character in _characters)
             {
                 character.GetComponent<BaseMovement>().SetMovementPosition(endPoint);

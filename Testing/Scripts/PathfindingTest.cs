@@ -16,7 +16,7 @@ public class PathfindingTest : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Vector3 endPoint = MyToolset.GetMouseWorldPosition();
+            Vector3 endPoint = KaynirTools.GetMouseWorldPosition();
             pathfindingMovement.SetMovementPosition(endPoint);
         }
 
