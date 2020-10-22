@@ -9,17 +9,15 @@ namespace KaynirGames.Pathfinding
     /// </summary>
     public class AstarAlgorithm
     {
-        private Grid<PathNode> _grid; // Сетка узлов для поиска пути.
-        private MinBinaryHeap<PathNode> _openSet; // Набор узлов для проверки. 
-        private HashSet<PathNode> _closedSet; // Набор проверенных узлов.
+        private Grid<PathNode> _grid;
+        private MinBinaryHeap<PathNode> _openSet;
+        private HashSet<PathNode> _closedSet;
 
         public AstarAlgorithm(Grid<PathNode> grid)
         {
             _grid = grid;
         }
-        /// <summary>
-        /// Рассчитать оптимальный маршрут.
-        /// </summary>
+
         public Path CalculatePath(Vector2 startPoint, Vector2 endPoint)
         {
             PathNode startNode = _grid.GetValue(startPoint);
@@ -29,8 +27,7 @@ namespace KaynirGames.Pathfinding
             
             if (endNode.IsObstacle)
             {
-                // Пробуем дойти до ближайшего соседа конечного узла.
-                endNode = TryOptimalNeighbour(startNode, endNode);
+                endNode = TryFindOptimalNeighbour(startNode, endNode);
 
                 if (endNode == null) return new Path(null, false);
             }
@@ -63,10 +60,8 @@ namespace KaynirGames.Pathfinding
 
             return new Path(pathNodes, isFound);
         }
-        /// <summary>
-        /// Попробовать найти оптимального соседа конечного узла.
-        /// </summary>
-        private PathNode TryOptimalNeighbour(PathNode startNode, PathNode endNode)
+
+        private PathNode TryFindOptimalNeighbour(PathNode startNode, PathNode endNode)
         {
             endNode.SetNeighbours(GetNeighbours(endNode));
 
@@ -86,9 +81,7 @@ namespace KaynirGames.Pathfinding
             }
             return optimalNode;
         }
-        /// <summary>
-        /// Проверить стоимость соседа текущего узла.
-        /// </summary>
+
         private void CheckNeighbour(PathNode currentNode, PathNode neighbour, PathNode endNode)
         {
             int newDistanceCost = currentNode.GCost + currentNode.GetDistanceCost(neighbour);
@@ -103,13 +96,11 @@ namespace KaynirGames.Pathfinding
                 }
                 else
                 {
-                    _openSet.Heapify(neighbour); // Так как обновилась стоимость узла.
+                    _openSet.Heapify(neighbour);
                 }
             }
         }
-        /// <summary>
-        /// Найти соседей узла.
-        /// </summary>
+
         private List<PathNode> GetNeighbours(PathNode pathNode)
         {
             List<PathNode> neighbours = new List<PathNode>();
@@ -118,13 +109,11 @@ namespace KaynirGames.Pathfinding
             {
                 for (int y = -1; y <= 1; y++)
                 {
-                    // Пропускаем центр блока 3х3 (позиция самого узла).
-                    if (x == 0 && y == 0)
-                        continue;
-                    // Вычисляем индексы соседнего узла в сетке. 
+                    if (x == 0 && y == 0) { continue; }
+
                     int posX = pathNode.GridPosition.x + x;
                     int posY = pathNode.GridPosition.y + y;
-                    // Проверяем, чтобы индексы не выходили за границы массива.
+
                     if (posX >= 0 && posX < _grid.GetLength(0) && posY >= 0 && posY < _grid.GetLength(1))
                     {
                         PathNode neighbour = _grid.GetValue(posX, posY);
@@ -138,9 +127,7 @@ namespace KaynirGames.Pathfinding
 
             return neighbours;
         }
-        /// <summary>
-        /// Записать пройденный маршрут.
-        /// </summary>
+
         private PathNode[] RetracePath(PathNode startNode, PathNode endNode)
         {
             List<PathNode> path = new List<PathNode>();
@@ -153,7 +140,6 @@ namespace KaynirGames.Pathfinding
             }
 
             path.Reverse();
-
             return path.ToArray();
         }
     }

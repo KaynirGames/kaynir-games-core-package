@@ -5,13 +5,13 @@ namespace KaynirGames.Movement
     [RequireComponent(typeof(Rigidbody2D))]
     public class CharacterMoveRigidbody : CharacterMoveBase
     {
-        [SerializeField] private float _moveSpeed = 25f; // Скорость движения персонажа.
-        [SerializeField, Range(0f, 0.3f)] private float _moveSmoothing = .05f; // Сглаживание движения персонажа.
-        [SerializeField] private bool _enableSmoothing = false; // Использовать сглаживание движения?
+        [SerializeField] private float _moveSpeed = 25f;
+        [SerializeField, Range(0f, 0.3f)] private float _moveSmoothing = .05f;
+        [SerializeField] private bool _enableSmoothing = false;
 
-        private Vector3 _moveDirection = Vector3.zero; // Направление движения персонажа.
+        private Vector3 _moveDirection = Vector3.zero;
         private Rigidbody2D _characterRigidbody;
-        private Vector2 _currentVelocity; // Модифицируется сглаживанием.
+        private Vector2 _currentVelocity;
 
         private void Awake()
         {

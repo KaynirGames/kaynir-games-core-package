@@ -9,13 +9,13 @@ namespace KaynirGames.Movement
     [RequireComponent(typeof(Seeker))]
     public class PathfindingMovement : BaseMovement
     {
-        [SerializeField] private bool _useSimplePath = true; // Использовать упрощенный маршрут?
-        [SerializeField] private bool _displayPath = false; // Отображать найденный маршрут?
-        [SerializeField] private CharacterMoveBase _characterMoveMethod = null; // Способ движения персонажа.
+        [SerializeField] private bool _useSimplePath = true;
+        [SerializeField] private bool _displayPath = false;
+        [SerializeField] private CharacterMoveBase _characterMoveMethod = null;
 
-        private Seeker _seeker; // Текущий сикер.     
-        private Vector2[] _waypoints = new Vector2[0]; // Точки маршрута.
-        private int _waypointIndex = -1; // Индекс текущей точки маршрута.
+        private Seeker _seeker;   
+        private Vector2[] _waypoints = new Vector2[0];
+        private int _waypointIndex = -1;
 
         private void Awake()
         {
@@ -54,7 +54,6 @@ namespace KaynirGames.Movement
         {
             if (_waypointIndex != -1)
             {
-                // Двигаться к следующей позиции.
                 Vector3 nextPosition = _waypoints[_waypointIndex];
                 Vector3 moveDirection = (nextPosition - transform.position).normalized;
 
@@ -66,7 +65,7 @@ namespace KaynirGames.Movement
 
                     if (_waypointIndex >= _waypoints.Length)
                     {
-                        _waypointIndex = -1; // Конец пути.
+                        _waypointIndex = -1;
                         IsMoving = false;
                     }
                 }

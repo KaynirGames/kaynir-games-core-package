@@ -1,5 +1,4 @@
 ﻿using KaynirGames.Collections;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,45 +11,36 @@ namespace KaynirGames.Pathfinding
     {
         public static Pathfinder Instance { get; private set; }
 
-        [SerializeField] private Vector2Int _gridSize = Vector2Int.one; // Величина сетки.
-        [SerializeField] private float _nodeSize = 1f; // Величина узла.
-        [SerializeField] private LayerMask _obstacleMask = new LayerMask(); // Для определения узлов, являющихся препятствием.
-        [SerializeField] private bool _displayGrid = false; // Отображать сетку узлов?
+        [SerializeField] private Vector2Int _gridSize = Vector2Int.one;
+        [SerializeField] private float _nodeSize = 1f;
+        [SerializeField] private LayerMask _obstacleMask = new LayerMask();
+        [SerializeField] private bool _displayGrid = false;
 
-        private Grid<PathNode> _grid; // Сетка узлов для поиска маршрута.
-        private AstarAlgorithm _astarAlgorithm; // Алгоритм поиска маршрута.
-        private List<Vector2> _allWorldPoints = new List<Vector2>(); // Доступные мировые точки в сетке.
-        private List<Vector2> _freeWorldPoints = new List<Vector2>(); // Мировые точки без препятствий в сетке.
- 
-        /// <summary>
-        /// Создать сетку для поиска маршрута.
-        /// </summary>
+        private Grid<PathNode> _grid;
+        private AstarAlgorithm _astarAlgorithm;
+        private List<Vector2> _allWorldPoints = new List<Vector2>();
+        private List<Vector2> _freeWorldPoints = new List<Vector2>();
+
         public void Initialize()
         {
             CreateGrid();
             _astarAlgorithm = new AstarAlgorithm(_grid);
         }
-        /// <summary>
-        /// Найти оптимальный маршрут.
-        /// </summary>
+
         public Path FindPath(Vector2 startPoint, Vector2 endPoint)
         {
             if (_grid == null) Initialize();
 
             return _astarAlgorithm.CalculatePath(startPoint, endPoint);
         }
-        /// <summary>
-        /// Получить мировые точки, используемые сеткой поиска маршрута.
-        /// </summary>
+
         public Vector2[] GetGridWorldPoints(bool includeObstacles)
         {
             return includeObstacles
-                ? _allWorldPoints.ToArray() 
+                ? _allWorldPoints.ToArray()
                 : _freeWorldPoints.ToArray();
         }
-        /// <summary>
-        /// Создать сетку для поиска маршрута.
-        /// </summary>
+
         private void CreateGrid()
         {
             _grid = new Grid<PathNode>(_gridSize, _nodeSize, transform.position);
