@@ -11,17 +11,24 @@ namespace KaynirGames.Tools
                 : Input.mousePosition;
         }
 
+        public static Vector3 GetPointerWorldPosition()
+        {
+            return Input.touchCount > 0
+                ? GetTouchWorldPosition(0)
+                : GetMouseWorldPosition();
+        }
+
         public static Vector3 GetMouseWorldPosition()
         {
-            return GetScreenWorldPosition(Input.mousePosition, Camera.main);
+            return GetWorldPosition(Input.mousePosition, Camera.main);
         }
 
         public static Vector3 GetTouchWorldPosition(int touchIndex)
         {
-            return GetScreenWorldPosition(Input.GetTouch(touchIndex).position, Camera.main);
+            return GetWorldPosition(Input.GetTouch(touchIndex).position, Camera.main);
         }
 
-        private static Vector3 GetScreenWorldPosition(Vector3 screenPosition, Camera worldCamera)
+        private static Vector3 GetWorldPosition(Vector3 screenPosition, Camera worldCamera)
         {
             return worldCamera.ScreenToWorldPoint(screenPosition);
         }
