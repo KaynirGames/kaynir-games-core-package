@@ -9,7 +9,7 @@ namespace KaynirGames.Pathfinding
     /// </summary>
     public class Pathfinder : MonoBehaviour
     {
-        public static Pathfinder Instance { get; private set; }
+        private static Pathfinder _current;
 
         [SerializeField] private Vector2Int _gridSize = Vector2Int.one;
         [SerializeField] private float _nodeSize = 1f;
@@ -18,27 +18,32 @@ namespace KaynirGames.Pathfinding
 
         private Grid<PathNode> _grid;
         private AstarAlgorithm _astarAlgorithm;
+
         private List<Vector2> _allWorldPoints = new List<Vector2>();
         private List<Vector2> _freeWorldPoints = new List<Vector2>();
 
         public void Initialize()
         {
             CreateGrid();
+
             _astarAlgorithm = new AstarAlgorithm(_grid);
         }
 
-        public Path FindPath(Vector2 startPoint, Vector2 endPoint)
+        public static Path FindPath(Vector2 startPoint, Vector2 endPoint)
         {
-            if (_grid == null) Initialize();
+            if (_current._grid == null)
+            {
+                _current.Initialize();
+            }
 
-            return _astarAlgorithm.CalculatePath(startPoint, endPoint);
+            return _current._astarAlgorithm.CalculatePath(startPoint, endPoint);
         }
 
-        public Vector2[] GetGridWorldPoints(bool includeObstacles)
+        public static Vector2[] GetGridWorldPoints(bool includeObstacles)
         {
             return includeObstacles
-                ? _allWorldPoints.ToArray()
-                : _freeWorldPoints.ToArray();
+                ? _current._allWorldPoints.ToArray()
+                : _current._freeWorldPoints.ToArray();
         }
 
         private void CreateGrid()
@@ -62,20 +67,21 @@ namespace KaynirGames.Pathfinding
 
         private void OnEnable()
         {
-            if (Instance == null) Instance = this;
+            if (_current == null)
+            {
+                _current = this;
+            }
         }
 
         private void OnDisable()
         {
-            Instance = null;
+            _current = null;
         }
 
         private void OnDrawGizmos()
         {
-            if (_displayGrid)
+            if (_displayGrid && _grid != null)
             {
-                if (_grid == null) return;
-
                 for (int x = 0; x < _grid.GetLength(0); x++)
                 {
                     for (int y = 0; y < _grid.GetLength(1); y++)

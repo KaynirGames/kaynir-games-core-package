@@ -5,11 +5,12 @@ using UnityEngine;
 
 public class PathfindingTest : MonoBehaviour
 {
-    [SerializeField] PathfindingMovement pathfindingMovement = null;
+    [SerializeField] PathfindingMovement _pathfindingMovement = null;
+    [SerializeField] Pathfinder _pathfinder = null;
 
     private void Start()
     {
-        Pathfinder.Instance.Initialize();
+        _pathfinder.Initialize();
     }
 
     private void Update()
@@ -17,12 +18,12 @@ public class PathfindingTest : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Vector3 endPoint = KaynirTools.GetMouseWorldPosition();
-            pathfindingMovement.SetMovementPosition(endPoint);
+            _pathfindingMovement.SetMovementPosition(endPoint);
         }
 
         if (Input.GetMouseButtonDown(1))
         {
-            pathfindingMovement.StopMovement();
+            _pathfindingMovement.StopMovement();
         }
     }
 }
