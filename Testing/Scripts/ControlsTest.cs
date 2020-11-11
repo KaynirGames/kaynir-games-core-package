@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ControlsTest : MonoBehaviour
 {
-    [SerializeField] private CharacterMoveBase _characterMoveBase = null;
+    [SerializeField] private MoveBase _characterMoveBase = null;
     [SerializeField] private InputHandler _inputControl = null;
 
     private Vector3 _moveDirection = Vector3.zero;
@@ -20,15 +20,10 @@ public class ControlsTest : MonoBehaviour
             Debug.Log("Attacking!");
         }
 
-        if (Input.GetButton("Fire1"))
-        {
-            Debug.Log("Attack button pressed.");
-        }
-
         if (Input.GetKeyDown(KeyCode.Space))
         {
             _isMoveEnabled = !_isMoveEnabled;
-            _characterMoveBase.Toggle(_isMoveEnabled);
+            _characterMoveBase.enabled = _isMoveEnabled;
         }
     }
 }

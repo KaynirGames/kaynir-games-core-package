@@ -2,46 +2,45 @@
 
 namespace KaynirGames.Movement
 {
-    public class DirectMovement : BaseMovement
+    public class MovePositionDirect : MovePositionBase
     {
-        [SerializeField] private CharacterMoveBase _characterMoveMethod = null;
-
         private Vector3 _movePosition;
         private Vector3 _moveDirection = Vector3.zero;
 
         private void Update()
         {
-            if (_characterMoveMethod != null)
-            {
-                HandleMovement();
-            }
+            MovePosition();
         }
 
-        public override void SetMovementPosition(Vector3 position)
+        public override void SetPosition(Vector3 position)
         {
             _movePosition = position;
             _moveDirection = Vector3.one;
             IsMoving = true;
         }
 
-        public override void StopMovement() => _moveDirection = Vector3.zero;
+        public override void StopMovement()
+        {
+            _moveDirection = Vector3.zero;
+            _moveBase.SetMoveDirection(Vector3.zero);
+            IsMoving = false;
+        }
 
-        protected override void HandleMovement()
+        protected override void MovePosition()
         {
             if (_moveDirection != Vector3.zero)
             {
                 _moveDirection = (_movePosition - transform.position).normalized;
-                _characterMoveMethod.SetMoveDirection(_moveDirection);
+                _moveBase.SetMoveDirection(_moveDirection);
 
                 if (Vector2.Distance(_movePosition, transform.position) <= _positionReachedDistance)
                 {
-                    _moveDirection = Vector3.zero;
-                    IsMoving = false;
+                    StopMovement();
                 }
             }
             else
             {
-                _characterMoveMethod.SetMoveDirection(Vector3.zero);
+                StopMovement();
             }
         }
     }

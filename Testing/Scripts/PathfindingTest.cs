@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PathfindingTest : MonoBehaviour
 {
-    [SerializeField] PathfindingMovement _pathfindingMovement = null;
+    [SerializeField] MovePositionPathfinding _pathfindingMovement = null;
     [SerializeField] Pathfinder _pathfinder = null;
 
     private void Start()
@@ -18,7 +18,7 @@ public class PathfindingTest : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Vector3 endPoint = KaynirTools.GetMouseWorldPosition();
-            _pathfindingMovement.SetMovementPosition(endPoint);
+            _pathfindingMovement.SetPosition(endPoint);
         }
 
         if (Input.GetMouseButtonDown(1))

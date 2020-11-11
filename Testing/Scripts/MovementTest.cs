@@ -13,7 +13,7 @@ public class MovementTest : MonoBehaviour
             Vector3 endPoint = KaynirTools.GetMouseWorldPosition();
             foreach (GameObject character in _characters)
             {
-                character.GetComponent<BaseMovement>().SetMovementPosition(endPoint);
+                character.GetComponent<MovePositionBase>().SetPosition(endPoint);
             }
         }
     }

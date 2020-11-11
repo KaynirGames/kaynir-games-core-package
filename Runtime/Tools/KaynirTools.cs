@@ -30,7 +30,10 @@ namespace KaynirGames.Tools
 
         private static Vector3 GetWorldPosition(Vector3 screenPosition, Camera worldCamera)
         {
-            return worldCamera.ScreenToWorldPoint(screenPosition);
+            Vector3 worldPosition = worldCamera.ScreenToWorldPoint(screenPosition);
+            worldPosition.z = 0;
+
+            return worldPosition;
         }
     }
 }

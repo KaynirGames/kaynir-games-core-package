@@ -3,34 +3,29 @@ using UnityEngine;
 
 namespace KaynirGames.Movement
 {
-    /// <summary>
-    /// Перемещение с использованием алгоритма поиска маршрута.
-    /// </summary>
     [RequireComponent(typeof(Seeker))]
-    public class PathfindingMovement : BaseMovement
+    public class MovePositionPathfinding : MovePositionBase
     {
         [SerializeField] private bool _useSimplePath = true;
         [SerializeField] private bool _displayPath = false;
-        [SerializeField] private CharacterMoveBase _characterMoveMethod = null;
 
         private Seeker _seeker;   
         private Vector2[] _waypoints = new Vector2[0];
         private int _waypointIndex = -1;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             _seeker = GetComponent<Seeker>();
         }
 
         private void Update()
         {
-            if (_characterMoveMethod != null)
-            {
-                HandleMovement();
-            }
+            MovePosition();
         }
 
-        public override void SetMovementPosition(Vector3 movePosition)
+        public override void SetPosition(Vector3 movePosition)
         {
             _waypoints = _useSimplePath
                 ? _seeker.GetSimplePath(transform.position, movePosition)
@@ -48,16 +43,21 @@ namespace KaynirGames.Movement
             }
         }
 
-        public override void StopMovement() => _waypointIndex = -1;
+        public override void StopMovement()
+        {
+            _waypointIndex = -1;
+            _moveBase.SetMoveDirection(Vector3.zero);
+            IsMoving = false;
+        }
 
-        protected override void HandleMovement()
+        protected override void MovePosition()
         {
             if (_waypointIndex != -1)
             {
                 Vector3 nextPosition = _waypoints[_waypointIndex];
                 Vector3 moveDirection = (nextPosition - transform.position).normalized;
 
-                _characterMoveMethod.SetMoveDirection(moveDirection);
+                _moveBase.SetMoveDirection(moveDirection);
 
                 if (Vector2.Distance(transform.position, nextPosition) <= _positionReachedDistance)
                 {
@@ -65,14 +65,13 @@ namespace KaynirGames.Movement
 
                     if (_waypointIndex >= _waypoints.Length)
                     {
-                        _waypointIndex = -1;
-                        IsMoving = false;
+                        StopMovement();
                     }
                 }
             }
             else
             {
-                _characterMoveMethod.SetMoveDirection(Vector3.zero);
+                StopMovement();
             }
         }
 
