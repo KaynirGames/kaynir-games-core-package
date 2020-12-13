@@ -30,5 +30,11 @@ namespace KaynirGames.InputSystem
         {
             return _attackButton.IsPressed;
         }
+
+        public void SetJoystick(Joystick joystick, ScreenJoybutton joybutton)
+        {
+            _joystick = joystick;
+            _attackButton = joybutton;
+        }
     }
 }
