@@ -78,6 +78,11 @@ namespace KaynirGames.Pathfinding
             _current = null;
         }
 
+        private void OnValidate()
+        {
+            CreateGrid();
+        }
+
         private void OnDrawGizmos()
         {
             if (_displayGrid && _grid != null)
